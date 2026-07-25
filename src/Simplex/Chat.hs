@@ -41,7 +41,7 @@ import Simplex.Chat.Store.Profiles
 import Simplex.Chat.Types
 import Simplex.Chat.Types.Shared (GroupMemberRole (..))
 import Simplex.Chat.Util (shuffle)
-import Simplex.FileTransfer.Client.Presets (defaultXFTPServers)
+
 import Simplex.Messaging.Agent
 import Simplex.Messaging.Agent.Env.SQLite (AgentConfig (..), InitialAgentServers (..), ServerCfg (..), allRoles, createAgentStore, defaultAgentConfig, presetServerCfg)
 import Simplex.Messaging.Agent.RetryInterval (RetryInterval (..))
@@ -86,19 +86,10 @@ defaultChatConfig =
               [ PresetOperator
                   { operator = Just operatorSimpleXChat,
                     smp = simplexChatSMPServers,
-                    useSMP = 4,
-                    xftp = map (presetServer True) $ L.toList defaultXFTPServers,
-                    useXFTP = 3,
+                    useSMP = 1,
+                    xftp = whisperXFTPServers,
+                    useXFTP = 1,
                     chatRelays = simplexChatRelays,
-                    useChatRelays = 2
-                  },
-                PresetOperator
-                  { operator = Just operatorFlux,
-                    smp = fluxSMPServers,
-                    useSMP = 3,
-                    xftp = fluxXFTPServers,
-                    useXFTP = 3,
-                    chatRelays = [],
                     useChatRelays = 0
                   }
               ],
@@ -109,7 +100,7 @@ defaultChatConfig =
       -- to have a different set of servers on the receiving end and on the sending end.
       -- To preserve backward compatibility receiving end should update before the sending.
       shortLinkPresetServers = allPresetServers,
-      presetDomains = [".simplex.im", ".simplexonflux.com"],
+      presetDomains = ["100.84.65.50", ".tailb34dd3.ts.net"],
       tbqSize = 1024,
       fileChunkSize = 15780, -- do not change
       xftpDescrPartSize = 14000,

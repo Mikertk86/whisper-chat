@@ -57,15 +57,15 @@ class SimplexService: Service() {
     } else {
       Log.d(TAG, "null intent. Probably restarted by the system.")
     }
-    ServiceCompat.startForeground(this, SIMPLEX_SERVICE_ID, createNotificationIfNeeded(), foregroundServiceType())
+    ServiceCompat.startForeground(this, WHISPER_SERVICE_ID, createNotificationIfNeeded(), foregroundServiceType())
     return START_STICKY // to restart if killed
   }
 
   override fun onCreate() {
     super.onCreate()
-    Log.d(TAG, "Simplex service created")
+    Log.d(TAG, "Whisper service created")
     createNotificationIfNeeded()
-    ServiceCompat.startForeground(this, SIMPLEX_SERVICE_ID, createNotificationIfNeeded(), foregroundServiceType())
+    ServiceCompat.startForeground(this, WHISPER_SERVICE_ID, createNotificationIfNeeded(), foregroundServiceType())
     /**
      * The reason [stopAfterStart] exists is because when the service is not called [startForeground] yet, and
      * we call [stopSelf] on the same service, [ForegroundServiceDidNotStartInTimeException] will be thrown.
@@ -85,7 +85,7 @@ class SimplexService: Service() {
   }
 
   override fun onDestroy() {
-    Log.d(TAG, "Simplex service destroyed")
+    Log.d(TAG, "Whisper service destroyed")
     try {
       wakeLock?.let {
         while (it.isHeld) it.release() // release all, in case acquired more than once
@@ -126,7 +126,7 @@ class SimplexService: Service() {
   }
 
   private fun startService() {
-    Log.d(TAG, "SimplexService startService")
+    Log.d(TAG, "WhisperService startService")
     if (wakeLock != null || isCheckingNewMessages) return
     val self = this
     isCheckingNewMessages = true
@@ -137,7 +137,7 @@ class SimplexService: Service() {
         Log.w(TAG, "Starting foreground service")
         val chatDbStatus = chatController.chatModel.chatDbStatus.value
         if (chatDbStatus != DBMigrationResult.OK) {
-          Log.w(chat.simplex.app.TAG, "SimplexService: problem with the database: $chatDbStatus")
+          Log.w(chat.simplex.app.TAG, "WhisperService: problem with the database: $chatDbStatus")
           showPassphraseNotification(chatDbStatus)
           androidAppContext.getWorkManagerInstance().cancelUniqueWork(SimplexService.SERVICE_START_WORKER_WORK_NAME_PERIODIC)
           safeStopService()
@@ -305,19 +305,19 @@ class SimplexService: Service() {
   }
 
   companion object {
-    const val TAG = "SIMPLEX_SERVICE"
-    const val NOTIFICATION_CHANNEL_ID = "chat.simplex.app.SIMPLEX_SERVICE_NOTIFICATION"
-    const val NOTIFICATION_CHANNEL_NAME = "SimpleX Chat service"
-    const val SIMPLEX_SERVICE_ID = 6789
+    const val TAG = "WHISPER_SERVICE"
+    const val NOTIFICATION_CHANNEL_ID = "chat.whisper.app.WHISPER_SERVICE_NOTIFICATION"
+    const val NOTIFICATION_CHANNEL_NAME = "Whisper service"
+    const val WHISPER_SERVICE_ID = 6789
     const val SERVICE_START_WORKER_VERSION = BuildConfig.VERSION_CODE
     const val SERVICE_START_WORKER_INTERVAL_MINUTES = 3 * 60L
-    const val SERVICE_START_WORKER_WORK_NAME_PERIODIC = "SimplexAutoRestartWorkerPeriodic" // Do not change!
+    const val SERVICE_START_WORKER_WORK_NAME_PERIODIC = "WhisperAutoRestartWorkerPeriodic" // Do not change!
 
     private const val PASSPHRASE_NOTIFICATION_ID = 1535
 
-    private const val WAKE_LOCK_TAG = "SimplexService::lock"
-    private const val SHARED_PREFS_ID = "chat.simplex.app.SIMPLEX_SERVICE_PREFS"
-    private const val SHARED_PREFS_SERVICE_STATE = "SIMPLEX_SERVICE_STATE"
+    private const val WAKE_LOCK_TAG = "WhisperService::lock"
+    private const val SHARED_PREFS_ID = "chat.whisper.app.WHISPER_SERVICE_PREFS"
+    private const val SHARED_PREFS_SERVICE_STATE = "WHISPER_SERVICE_STATE"
     private const val WORK_NAME_ONCE = "ServiceStartWorkerOnce"
 
     var isServiceStarting = false
@@ -347,10 +347,10 @@ class SimplexService: Service() {
 
     private suspend fun serviceAction(action: Action) {
       if (!NtfManager.areNotificationsEnabledInSystem()) {
-        Log.d(TAG, "SimplexService serviceAction: ${action.name}. Notifications are not enabled in OS yet, not starting service")
+        Log.d(TAG, "WhisperService serviceAction: ${action.name}. Notifications are not enabled in OS yet, not starting service")
         return
       }
-      Log.d(TAG, "SimplexService serviceAction: ${action.name}")
+      Log.d(TAG, "WhisperService serviceAction: ${action.name}")
       withContext(Dispatchers.IO) {
         Intent(androidAppContext, SimplexService::class.java).also {
           it.action = action.name

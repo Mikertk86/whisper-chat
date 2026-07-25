@@ -157,6 +157,38 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling:1.6.4")
 }
 
+val patchWhisperNativeLibs by tasks.registering {
+    group = "whisper"
+    description = "Patch prebuilt Android libsimplex.so artifacts so Whisper release APKs do not ship upstream relay presets."
+    inputs.files(fileTree("../common/src/commonMain/cpp/android/libs") { include("**/libsimplex.so") })
+    outputs.upToDateWhen { false }
+    doLast {
+        exec {
+            workingDir(rootProject.projectDir)
+            commandLine("python3", "../../scripts/whisper_patch_native_libs.py")
+        }
+    }
+}
+
+fun Task.dependsOnWhisperNativePatchIfNeeded() {
+    if (
+        name.startsWith("configureCMake") ||
+        name.startsWith("buildCMake") ||
+        name == "mergeReleaseNativeLibs" ||
+        name == "mergeDebugNativeLibs"
+    ) {
+        dependsOn(patchWhisperNativeLibs)
+    }
+}
+
+tasks.configureEach {
+    dependsOnWhisperNativePatchIfNeeded()
+}
+
+tasks.whenTaskAdded {
+    dependsOnWhisperNativePatchIfNeeded()
+}
+
 tasks {
     val compressApk by creating {
         doLast {

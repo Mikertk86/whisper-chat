@@ -74,8 +74,8 @@ fun SettingsView(chatModel: ChatModel, setPerformLA: (Boolean) -> Unit, close: (
   }
 }
 
-val simplexTeamUri =
-  "https://smp12.simplex.im/a#E34TK4lKV23NCxT4tw_XAS1pNZTLWWSqAFJqBNJfoco"
+val whisperSupportUri =
+  "https://github.com/Mikertk86/whisper-chat/issues"
 
 @Composable
 fun SettingsLayout(
@@ -121,9 +121,9 @@ fun SettingsLayout(
       SettingsActionItem(painterResource(MR.images.ic_add), stringResource(MR.strings.whats_new), showCustomModal { _, close -> WhatsNewView(viaSettings = true, close = close) }, disabled = stopped)
       SettingsActionItem(painterResource(MR.images.ic_info), stringResource(MR.strings.about_simplex_chat), showModal { SimpleXInfo(it, onboarding = false) })
       if (!chatModel.desktopNoUserNoRemote) {
-        SettingsActionItem(painterResource(MR.images.ic_tag), stringResource(MR.strings.chat_with_the_founder), { uriHandler.openVerifiedSimplexUri(simplexTeamUri) }, textColor = MaterialTheme.colors.primary, disabled = stopped)
+        SettingsActionItem(painterResource(MR.images.ic_tag), stringResource(MR.strings.chat_with_the_founder), { uriHandler.openExternalLink(whisperSupportUri) }, textColor = MaterialTheme.colors.primary, disabled = stopped)
       }
-      SettingsActionItem(painterResource(MR.images.ic_mail), stringResource(MR.strings.send_us_an_email), { uriHandler.openExternalLink("https://github.com/simplex-chat/simplex-chat") }, textColor = MaterialTheme.colors.primary)
+      SettingsActionItem(painterResource(MR.images.ic_mail), stringResource(MR.strings.send_us_an_email), { uriHandler.openExternalLink("https://github.com/Mikertk86/whisper-chat") }, textColor = MaterialTheme.colors.primary)
     }
     SectionDividerSpaced()
 
@@ -207,7 +207,7 @@ fun ChatLockItem(
 }
 
 @Composable private fun ContributeItem(uriHandler: UriHandler) {
-  SectionItemView({ uriHandler.openExternalLink("https://github.com/simplex-chat/simplex-chat#contribute") }) {
+  SectionItemView({ uriHandler.openExternalLink("https://github.com/Mikertk86/whisper-chat") }) {
     Icon(
       painterResource(MR.images.ic_keyboard),
       contentDescription = "GitHub",
@@ -235,7 +235,7 @@ fun ChatLockItem(
 }
 
 @Composable private fun StarOnGithubItem(uriHandler: UriHandler) {
-  SectionItemView({ uriHandler.openExternalLink("https://github.com/simplex-chat/simplex-chat") }) {
+  SectionItemView({ uriHandler.openExternalLink("https://github.com/Mikertk86/whisper-chat") }) {
     Icon(
       painter = painterResource(MR.images.ic_github),
       contentDescription = "GitHub",
@@ -268,7 +268,7 @@ fun ChatLockItem(
 }
 
 @Composable fun InstallTerminalAppItem(uriHandler: UriHandler) {
-  SectionItemView({ uriHandler.openExternalLink("https://github.com/simplex-chat/simplex-chat") }) {
+  SectionItemView({ uriHandler.openExternalLink("https://github.com/Mikertk86/whisper-chat") }) {
     Icon(
       painter = painterResource(MR.images.ic_github),
       contentDescription = "GitHub",

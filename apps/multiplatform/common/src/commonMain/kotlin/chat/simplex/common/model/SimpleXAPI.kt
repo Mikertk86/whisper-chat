@@ -4327,8 +4327,8 @@ data class ServerOperatorInfo(
 val operatorsInfo: Map<OperatorTag, ServerOperatorInfo> = mapOf(
   OperatorTag.SimpleX to ServerOperatorInfo(
     description = listOf(
-      "SimpleX Chat is the first communication network that has no user profile IDs of any kind, not even random numbers or keys that identify the users.",
-      "SimpleX Chat Ltd develops the communication software for SimpleX network."
+      "Whisper is a private communication network with no user profile IDs of any kind, not even random numbers or keys that identify users.",
+      "Whisper private relay is operated for Michal and family."
     ),
     website = "https://simplex.chat",
     logo = MR.images.decentralized,
@@ -4438,9 +4438,9 @@ data class ServerOperator(
     val sampleData1 = ServerOperator(
       operatorId = 1,
       operatorTag = OperatorTag.SimpleX,
-      tradeName = "SimpleX Chat",
-      legalName = "SimpleX Chat Ltd",
-      serverDomains = listOf("simplex.im"),
+      tradeName = "Whisper",
+      legalName = "Whisper private relay",
+      serverDomains = listOf("100.84.65.50", "tailb34dd3.ts.net"),
       conditionsAcceptance = ConditionsAcceptance.Accepted(acceptedAt = null, autoAccepted = false),
       enabled = true,
       smpRoles = ServerRoles(storage = true, proxy = true),
@@ -4679,7 +4679,7 @@ data class UserServer(
       preset = UserServer(
         remoteHostId = null,
         serverId = 1,
-        server = "smp://abcd@smp8.simplex.im",
+        server = "smp://abcd@100.84.65.50:5223",
         preset = true,
         tested = true,
         enabled = true,
@@ -4688,7 +4688,7 @@ data class UserServer(
       custom = UserServer(
         remoteHostId = null,
         serverId = 2,
-        server = "smp://abcd@smp9.simplex.im",
+        server = "smp://abcd@100.84.65.50:5223",
         preset = false,
         tested = false,
         enabled = false,
@@ -4697,7 +4697,7 @@ data class UserServer(
       untested = UserServer(
         remoteHostId = null,
         serverId = 3,
-        server = "smp://abcd@smp10.simplex.im",
+        server = "smp://abcd@100.84.65.50:5223",
         preset = false,
         tested = null,
         enabled = true,
@@ -4706,7 +4706,7 @@ data class UserServer(
       xftpPreset = UserServer(
         remoteHostId = null,
         serverId = 4,
-        server = "xftp://abcd@xftp8.simplex.im",
+        server = "xftp://abcd@100.84.65.50:5443",
         preset = true,
         tested = true,
         enabled = true,
@@ -4835,7 +4835,7 @@ data class ServerAddress(
     )
     val sampleData = ServerAddress(
       serverProtocol = ServerProtocol.SMP,
-      hostnames = listOf("smp.simplex.im", "1234.onion"),
+      hostnames = listOf("100.84.65.50", "1234.onion"),
       port = "",
       keyHash = "LcJUMfVhwD8yxjAiSaDzzGF3-kLG4Uh0Fl_ZIjrRwjI=",
       basicAuth = "server_password"

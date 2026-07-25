@@ -17,7 +17,7 @@ import chat.simplex.common.ui.theme.SimpleXTheme
 import chat.simplex.common.views.helpers.annotatedStringResource
 import chat.simplex.common.views.onboarding.ReadableTextWithLink
 import chat.simplex.common.views.usersettings.MarkdownHelpView
-import chat.simplex.common.views.usersettings.simplexTeamUri
+import chat.simplex.common.views.usersettings.whisperSupportUri
 import chat.simplex.res.MR
 
 val bold = SpanStyle(fontWeight = FontWeight.Bold)
@@ -28,7 +28,7 @@ fun ChatHelpView(addContact: (() -> Unit)? = null) {
     verticalArrangement = Arrangement.spacedBy(10.dp)
   ) {
     Text(stringResource(MR.strings.thank_you_for_installing_simplex), lineHeight = 22.sp)
-    ReadableTextWithLink(MR.strings.you_can_connect_to_simplex_chat_founder, simplexTeamUri, simplexLink = true)
+    ReadableTextWithLink(MR.strings.you_can_connect_to_simplex_chat_founder, whisperSupportUri)
     Column(
       Modifier.padding(top = 24.dp),
       verticalArrangement = Arrangement.spacedBy(10.dp)

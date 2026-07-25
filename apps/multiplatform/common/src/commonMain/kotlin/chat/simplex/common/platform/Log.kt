@@ -1,6 +1,6 @@
 package chat.simplex.common.platform
 
-const val TAG = "SIMPLEX"
+const val TAG = "WHISPER"
 
 enum class LogLevel {
   DEBUG, INFO, WARNING, ERROR

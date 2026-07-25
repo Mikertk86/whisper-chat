@@ -725,7 +725,7 @@ private suspend fun MutableState<MigrationToState?>.cleanUpOnBack(chatReceiver: 
 }
 
 private fun strHasSimplexFileLink(text: String): Boolean =
-  text.startsWith("simplex:/file") || text.startsWith("https://simplex.chat/file")
+  text.startsWith("whisper:/file")
 
 private fun fileForTemporaryDatabase(): File =
   File(getMigrationTempFilesDirectory(), generateNewFileName("migration", "db", getMigrationTempFilesDirectory()))
@@ -733,7 +733,7 @@ private fun fileForTemporaryDatabase(): File =
 private fun archivePath(): String {
   val archiveTime = Clock.System.now()
   val ts = SimpleDateFormat("yyyy-MM-dd'T'HHmmss", Locale.US).format(Date.from(archiveTime.toJavaInstant()))
-  val archiveName = "simplex-chat.$ts.zip"
+  val archiveName = "whisper-chat.$ts.zip"
   val archivePath = File(getMigrationTempFilesDirectory(), archiveName)
   return archivePath.absolutePath
 }

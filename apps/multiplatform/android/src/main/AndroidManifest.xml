@@ -61,51 +61,14 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
 
-      <!-- open simplex:/ connection URI -->
+      <!-- open whisper:/ connection URI; do not claim upstream public hosts -->
       <intent-filter>
         <action android:name="android.intent.action.VIEW" />
 
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
 
-        <data android:scheme="simplex" />
-      </intent-filter>
-      <intent-filter android:autoVerify="true">
-        <action android:name="android.intent.action.VIEW" />
-
-        <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.BROWSABLE" />
-
-        <data android:scheme="http" />
-        <data android:scheme="https" />
-        <data android:host="simplex.chat" />
-        <data android:host="smp4.simplex.im" />
-        <data android:host="smp5.simplex.im" />
-        <data android:host="smp6.simplex.im" />
-        <data android:host="smp7.simplex.im" /> <!-- TODO remove -->
-        <data android:host="smp8.simplex.im" />
-        <data android:host="smp9.simplex.im" />
-        <data android:host="smp10.simplex.im" />
-        <data android:host="smp11.simplex.im" />
-        <data android:host="smp12.simplex.im" />
-        <data android:host="smp14.simplex.im" />
-        <data android:host="smp15.simplex.im" />
-        <data android:host="smp16.simplex.im" />
-        <data android:host="smp17.simplex.im" />
-        <data android:host="smp18.simplex.im" />
-        <data android:host="smp19.simplex.im" />
-        <data android:host="smp1.simplexonflux.com" />
-        <data android:host="smp2.simplexonflux.com" />
-        <data android:host="smp3.simplexonflux.com" />
-        <data android:host="smp4.simplexonflux.com" />
-        <data android:host="smp5.simplexonflux.com" />
-        <data android:host="smp6.simplexonflux.com" />
-        <data android:pathPrefix="/invitation" />
-        <data android:pathPrefix="/contact" />
-        <data android:pathPrefix="/a" />
-        <data android:pathPrefix="/c" />
-        <data android:pathPrefix="/g" />
-        <data android:pathPrefix="/i" />
+        <data android:scheme="whisper" />
       </intent-filter>
       <!-- Receive files from other apps -->
       <intent-filter>
