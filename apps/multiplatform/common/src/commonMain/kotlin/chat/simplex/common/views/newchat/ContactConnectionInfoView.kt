@@ -207,7 +207,7 @@ private fun PreviewContactConnectionInfoView() {
   SimpleXTheme {
     ContactConnectionInfoLayout(
       chatModel = ChatModel,
-      connLink = CreatedConnLink("https://100.84.65.50/contact#/?v=1&smp=smp%3A%2F%2FPQUV2eL0t7OStZOoAsPEV2QYWt4-xilbakvGUGOItUo%3D%40100.84.65.50:5223%2FK1rslx-m5bpXVIdMZg9NLUZ_8JBm8xTt%23MCowBQYDK2VuAyEALDeVe-sG8mRY22LsXlPgiwTNs9dbiLrNuA7f3ZMAJ2w%3D", null),
+      connLink = CreatedConnLink("https://homebudget360.tailb34dd3.ts.net/contact#/?v=1&smp=smp%3A%2F%2FPQUV2eL0t7OStZOoAsPEV2QYWt4-xilbakvGUGOItUo%3D%40homebudget360.tailb34dd3.ts.net:5223%2FK1rslx-m5bpXVIdMZg9NLUZ_8JBm8xTt%23MCowBQYDK2VuAyEALDeVe-sG8mRY22LsXlPgiwTNs9dbiLrNuA7f3ZMAJ2w%3D", null),
       showShortLink = remember { mutableStateOf(true) },
       contactConnection = PendingContactConnection.getSampleData(),
       focusAlias = false,

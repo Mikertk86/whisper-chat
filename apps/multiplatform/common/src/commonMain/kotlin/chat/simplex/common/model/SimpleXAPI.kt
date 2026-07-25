@@ -4440,7 +4440,7 @@ data class ServerOperator(
       operatorTag = OperatorTag.SimpleX,
       tradeName = "Whisper",
       legalName = "Whisper private relay",
-      serverDomains = listOf("100.84.65.50", "tailb34dd3.ts.net"),
+      serverDomains = listOf("homebudget360.tailb34dd3.ts.net", "tailb34dd3.ts.net"),
       conditionsAcceptance = ConditionsAcceptance.Accepted(acceptedAt = null, autoAccepted = false),
       enabled = true,
       smpRoles = ServerRoles(storage = true, proxy = true),
@@ -4679,7 +4679,7 @@ data class UserServer(
       preset = UserServer(
         remoteHostId = null,
         serverId = 1,
-        server = "smp://abcd@100.84.65.50:5223",
+        server = "smp://abcd@homebudget360.tailb34dd3.ts.net:5223",
         preset = true,
         tested = true,
         enabled = true,
@@ -4688,7 +4688,7 @@ data class UserServer(
       custom = UserServer(
         remoteHostId = null,
         serverId = 2,
-        server = "smp://abcd@100.84.65.50:5223",
+        server = "smp://abcd@homebudget360.tailb34dd3.ts.net:5223",
         preset = false,
         tested = false,
         enabled = false,
@@ -4697,7 +4697,7 @@ data class UserServer(
       untested = UserServer(
         remoteHostId = null,
         serverId = 3,
-        server = "smp://abcd@100.84.65.50:5223",
+        server = "smp://abcd@homebudget360.tailb34dd3.ts.net:5223",
         preset = false,
         tested = null,
         enabled = true,
@@ -4706,7 +4706,7 @@ data class UserServer(
       xftpPreset = UserServer(
         remoteHostId = null,
         serverId = 4,
-        server = "xftp://abcd@100.84.65.50:5443",
+        server = "xftp://abcd@homebudget360.tailb34dd3.ts.net:5443",
         preset = true,
         tested = true,
         enabled = true,
@@ -4835,7 +4835,7 @@ data class ServerAddress(
     )
     val sampleData = ServerAddress(
       serverProtocol = ServerProtocol.SMP,
-      hostnames = listOf("100.84.65.50", "1234.onion"),
+      hostnames = listOf("homebudget360.tailb34dd3.ts.net", "1234.onion"),
       port = "",
       keyHash = "LcJUMfVhwD8yxjAiSaDzzGF3-kLG4Uh0Fl_ZIjrRwjI=",
       basicAuth = "server_password"

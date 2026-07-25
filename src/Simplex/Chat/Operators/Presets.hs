@@ -13,7 +13,7 @@ import Simplex.Messaging.Agent.Store.Entity
 import Simplex.Messaging.Protocol (ProtocolType (..), SMPServer)
 
 whisperSMPServer :: SMPServer
-whisperSMPServer = "smp://0zCvaMgX0nL95J68oW7dyWrIVpMGyhbqyqbC2ekemHA=@100.84.65.50:5223"
+whisperSMPServer = "smp://0zCvaMgX0nL95J68oW7dyWrIVpMGyhbqyqbC2ekemHA=@homebudget360.tailb34dd3.ts.net:5223"
 
 operatorSimpleXChat :: NewServerOperator
 operatorSimpleXChat =
@@ -22,7 +22,7 @@ operatorSimpleXChat =
       operatorTag = Just OTSimplex,
       tradeName = "Whisper",
       legalName = Just "Whisper private relay",
-      serverDomains = ["100.84.65.50", "tailb34dd3.ts.net"],
+      serverDomains = ["homebudget360.tailb34dd3.ts.net", "tailb34dd3.ts.net"],
       conditionsAcceptance = CAAccepted Nothing True,
       enabled = True,
       smpRoles = allRoles,
@@ -65,7 +65,7 @@ fluxSMPServers_ :: NonEmpty SMPServer
 fluxSMPServers_ = [whisperSMPServer]
 
 whisperXFTPServers :: [NewUserServer 'PXFTP]
-whisperXFTPServers = map (presetServer True) ["xftp://O5SdqMMNz6c5ceFrpY5mh4kyYYuD9vUze3-uMeJ9c6o=@100.84.65.50:5443"]
+whisperXFTPServers = map (presetServer True) ["xftp://O5SdqMMNz6c5ceFrpY5mh4kyYYuD9vUze3-uMeJ9c6o=@homebudget360.tailb34dd3.ts.net:5443"]
 
 fluxXFTPServers :: [NewUserServer 'PXFTP]
 fluxXFTPServers = []

@@ -35,6 +35,28 @@ android {
         manifestPlaceholders["extract_native_libs"] = rootProject.extra["compression.level"] as Int != 0
     }
 
+    val whisperReleaseStoreFile = System.getenv("WHISPER_KEYSTORE") ?: System.getenv("WHISPER_RELEASE_STORE_FILE")
+    val whisperReleaseStorePassword = System.getenv("WHISPER_STORE_PASS") ?: System.getenv("WHISPER_RELEASE_STORE_PASSWORD")
+    val whisperReleaseKeyAlias = System.getenv("WHISPER_KEY_ALIAS") ?: System.getenv("WHISPER_RELEASE_KEY_ALIAS")
+    val whisperReleaseKeyPassword = System.getenv("WHISPER_KEY_PASS") ?: System.getenv("WHISPER_RELEASE_KEY_PASSWORD")
+    val hasWhisperReleaseSigning = listOf(
+        whisperReleaseStoreFile,
+        whisperReleaseStorePassword,
+        whisperReleaseKeyAlias,
+        whisperReleaseKeyPassword
+    ).all { !it.isNullOrBlank() }
+
+    signingConfigs {
+        if (hasWhisperReleaseSigning) {
+            create("whisperRelease") {
+                storeFile = file(whisperReleaseStoreFile!!)
+                storePassword = whisperReleaseStorePassword
+                keyAlias = whisperReleaseKeyAlias
+                keyPassword = whisperReleaseKeyPassword
+            }
+        }
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix = rootProject.extra["application_id.suffix"] as String
@@ -46,6 +68,9 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            if (hasWhisperReleaseSigning) {
+                signingConfig = signingConfigs.getByName("whisperRelease")
+            }
         }
     }
     kotlinOptions {

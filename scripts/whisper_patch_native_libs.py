@@ -30,6 +30,9 @@ REPLACEMENTS: dict[bytes, bytes] = {
     b"SimpleX Chat Relay 2": b"Whisper Relay Two   ",
     b"SimpleX Chat Relay 3": b"Whisper Relay Three ",
     b"SimpleX Chat Ltd": b"Whisper Relay   ",
+    b"SimpleX Directory": b"Whisper Directory",
+    b"SimpleX network mission": b"Whisper network mission",
+    b"chat@simplex.chat": b"team@whisper.chat",
 }
 
 FORBIDDEN = [
@@ -41,6 +44,9 @@ FORBIDDEN = [
     re.compile(rb"SimpleX Chat Relay"),
     re.compile(rb"Ask SimpleX Team"),
     re.compile(rb"SimpleX Status"),
+    re.compile(rb"SimpleX Directory"),
+    re.compile(rb"SimpleX network mission"),
+    re.compile(rb"chat@simplex\.chat"),
 ]
 
 

@@ -100,7 +100,7 @@ defaultChatConfig =
       -- to have a different set of servers on the receiving end and on the sending end.
       -- To preserve backward compatibility receiving end should update before the sending.
       shortLinkPresetServers = allPresetServers,
-      presetDomains = ["100.84.65.50", ".tailb34dd3.ts.net"],
+      presetDomains = ["homebudget360.tailb34dd3.ts.net", ".tailb34dd3.ts.net"],
       tbqSize = 1024,
       fileChunkSize = 15780, -- do not change
       xftpDescrPartSize = 14000,

@@ -2850,7 +2850,7 @@ chatVersionRange' = do
 
 adminContactReq :: ConnReqContact
 adminContactReq =
-  either error id $ strDecode "simplex:/contact#/?v=2-7&smp=smp%3A%2F%2F0zCvaMgX0nL95J68oW7dyWrIVpMGyhbqyqbC2ekemHA%3D%40100.84.65.50%3A5223%2FXVSTi91juNrQbMc0FiWvjwMAApKzwzfd%23%2F%3Fv%3D1-4%26dh%3DMCowBQYDK2VuAyEAZMnJTbuDr4p17slP5FdyHmTK4gWRLny5T8rCb-ROey8%253D%26q%3Dc"
+  either error id $ strDecode "simplex:/contact#/?v=2-7&smp=smp%3A%2F%2F0zCvaMgX0nL95J68oW7dyWrIVpMGyhbqyqbC2ekemHA%3D%40homebudget360.tailb34dd3.ts.net%3A5223%2FXVSTi91juNrQbMc0FiWvjwMAApKzwzfd%23%2F%3Fv%3D1-4%26dh%3DMCowBQYDK2VuAyEAZMnJTbuDr4p17slP5FdyHmTK4gWRLny5T8rCb-ROey8%253D%26q%3Dc"
 
 contactCReqHash :: ConnReqContact -> ConnReqUriHash
 contactCReqHash = ConnReqUriHash . C.sha256Hash . strEncode
