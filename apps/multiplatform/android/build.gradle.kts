@@ -12,7 +12,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "chat.simplex.app"
+        applicationId = "chat.whisper.app"
         namespace = "chat.simplex.app"
         minSdk = 26
         targetSdk = 35
@@ -31,7 +31,7 @@ android {
             }
         }
         manifestPlaceholders["app_name"] = "@string/app_name"
-        manifestPlaceholders["provider_authorities"] = "chat.simplex.app.provider"
+        manifestPlaceholders["provider_authorities"] = "chat.whisper.app.provider"
         manifestPlaceholders["extract_native_libs"] = rootProject.extra["compression.level"] as Int != 0
     }
 
@@ -41,7 +41,7 @@ android {
             isDebuggable = rootProject.extra["enable_debuggable"] as Boolean
             manifestPlaceholders["app_name"] = rootProject.extra["app.name"] as String
             // Provider can"t be the same for different apps on the same device
-            manifestPlaceholders["provider_authorities"] = "chat.simplex.app${rootProject.extra["application_id.suffix"]}.provider"
+            manifestPlaceholders["provider_authorities"] = "chat.whisper.app${rootProject.extra["application_id.suffix"]}.provider"
         }
         release {
             isMinifyEnabled = false
@@ -209,9 +209,9 @@ tasks {
             }
 
             if (project.properties["android.injected.signing.key.alias"] != null && buildType == "release") {
-                File(outputDir, "android-release.apk").renameTo(File(outputDir, "simplex.apk"))
-                File(outputDir, "android-armeabi-v7a-release.apk").renameTo(File(outputDir, "simplex-armv7a.apk"))
-                File(outputDir, "android-arm64-v8a-release.apk").renameTo(File(outputDir, "simplex.apk"))
+                File(outputDir, "android-release.apk").renameTo(File(outputDir, "whisper.apk"))
+                File(outputDir, "android-armeabi-v7a-release.apk").renameTo(File(outputDir, "whisper-armv7a.apk"))
+                File(outputDir, "android-arm64-v8a-release.apk").renameTo(File(outputDir, "whisper.apk"))
             }
             // View all gradle properties set
             // project.properties.each { k, v -> println "$k -> $v" }

@@ -75,7 +75,7 @@ fun SettingsView(chatModel: ChatModel, setPerformLA: (Boolean) -> Unit, close: (
 }
 
 val simplexTeamUri =
-  "simplex:/a#lrdvu2d8A1GumSmoKb2krQmtKhWXq-tyGpHuM7aMwsw?h=smp6.simplex.im"
+  "https://smp12.simplex.im/a#E34TK4lKV23NCxT4tw_XAS1pNZTLWWSqAFJqBNJfoco"
 
 @Composable
 fun SettingsLayout(
@@ -123,7 +123,7 @@ fun SettingsLayout(
       if (!chatModel.desktopNoUserNoRemote) {
         SettingsActionItem(painterResource(MR.images.ic_tag), stringResource(MR.strings.chat_with_the_founder), { uriHandler.openVerifiedSimplexUri(simplexTeamUri) }, textColor = MaterialTheme.colors.primary, disabled = stopped)
       }
-      SettingsActionItem(painterResource(MR.images.ic_mail), stringResource(MR.strings.send_us_an_email), { uriHandler.openUriCatching("mailto:chat@simplex.chat") }, textColor = MaterialTheme.colors.primary)
+      SettingsActionItem(painterResource(MR.images.ic_mail), stringResource(MR.strings.send_us_an_email), { uriHandler.openExternalLink("https://github.com/simplex-chat/simplex-chat") }, textColor = MaterialTheme.colors.primary)
     }
     SectionDividerSpaced()
 
