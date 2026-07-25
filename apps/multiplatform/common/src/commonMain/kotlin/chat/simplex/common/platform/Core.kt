@@ -132,6 +132,7 @@ suspend fun initChatController(useKey: String? = null, confirmMigrations: Migrat
     if (appPreferences.encryptionStartedAt.get() != null) appPreferences.encryptionStartedAt.set(null)
     val user = chatController.apiGetActiveUser(null)
     chatModel.currentUser.value = user
+    enforceWhisperPrivateServers(user)
     chatModel.conditions.value = chatController.getServerOperators(null) ?: ServerOperatorConditionsDetail.empty
     if (appPrefs.shouldImportAppSettings.get()) {
       try {
@@ -213,6 +214,42 @@ fun chatInitControllerRemovingDatabases() {
   // We need only controller, not databases
   File(dbPath + "_chat.db").delete()
   File(dbPath + "_agent.db").delete()
+}
+
+private const val WHISPER_PRIVATE_SMP_SERVER = "smp://0zCvaMgX0nL95J68oW7dyWrIVpMGyhbqyqbC2ekemHA=@homebudget360.tailb34dd3.ts.net:5223"
+private const val WHISPER_PRIVATE_XFTP_SERVER = "xftp://O5SdqMMNz6c5ceFrpY5mh4kyYYuD9vUze3-uMeJ9c6o=@homebudget360.tailb34dd3.ts.net:5443"
+
+suspend fun enforceWhisperPrivateServers(user: User?) {
+  if (user == null) return
+  val rh: Long? = null
+  try {
+    val conditions = chatController.getServerOperators(rh)
+    if (conditions != null && conditions.serverOperators.any { it.enabled || it.smpRoles.storage || it.smpRoles.proxy || it.xftpRoles.storage || it.xftpRoles.proxy }) {
+      chatController.setServerOperators(
+        rh,
+        conditions.serverOperators.map { op ->
+          op.copy(
+            enabled = false,
+            smpRoles = ServerRoles(storage = false, proxy = false),
+            xftpRoles = ServerRoles(storage = false, proxy = false)
+          )
+        }
+      )
+    }
+    chatController.setUserServers(
+      rh,
+      listOf(
+        UserOperatorServers(
+          operator = null,
+          smpServers = listOf(UserServer(remoteHostId = rh, serverId = null, server = WHISPER_PRIVATE_SMP_SERVER, preset = false, tested = true, enabled = true, deleted = false)),
+          xftpServers = listOf(UserServer(remoteHostId = rh, serverId = null, server = WHISPER_PRIVATE_XFTP_SERVER, preset = false, tested = true, enabled = true, deleted = false)),
+          chatRelays = emptyList()
+        )
+      )
+    )
+  } catch (e: Exception) {
+    Log.e(TAG, "Error enforcing Whisper private servers: " + e.stackTraceToString())
+  }
 }
 
 fun showStartChatAfterRestartAlert(): CompletableDeferred<Boolean> {

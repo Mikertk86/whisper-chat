@@ -1,103 +1,51 @@
 # Whisper Android release
 
-Whisper is a private messenger build based on the SimpleX Chat source code, prepared for public Android distribution by Michal/Mikertk86.
+Current status: `whisper-v6.5.6-official-5` is the valid public Android hotfix release. Use official-5 instead of official-4.
 
-## Official download
+## Current release
 
-- Repo: https://github.com/Mikertk86/whisper-chat
-- Releases: https://github.com/Mikertk86/whisper-chat/releases
-- Latest: https://github.com/Mikertk86/whisper-chat/releases/latest
-- Current release: https://github.com/Mikertk86/whisper-chat/releases/tag/whisper-v6.5.6-official-4
+- Release tag: `whisper-v6.5.6-official-5`
+- GitHub: https://github.com/Mikertk86/whisper-chat/releases/tag/whisper-v6.5.6-official-5
+- ARM64 APK: https://github.com/Mikertk86/whisper-chat/releases/download/whisper-v6.5.6-official-5/whisper-android-v6.5.6%2B360.5-arm64-v8a-release.apk
+- ARMv7 APK: https://github.com/Mikertk86/whisper-chat/releases/download/whisper-v6.5.6-official-5/whisper-android-v6.5.6%2B360.5-armeabi-v7a-release.apk
 
-## Android package
+## official-5 hotfix
 
-- Application ID: `chat.whisper.app`
-- App name: `Whisper`
-- Version: `6.5.6`, versionCode `359`
-- Release tag: `whisper-v6.5.6-official-4`
-- Release artifacts:
-  - `whisper-android-v6.5.6+359.4-arm64-v8a-release.apk`
-  - `whisper-android-v6.5.6+359.4-armeabi-v7a-release.apk`
-- Checksum file: `SHA256SUMS.txt`
-- Checksum signature: `SHA256SUMS.txt.asc`
-- GPG public key: `WHISPER_RELEASE_SIGNING_PUBLIC_KEY.asc`
+Problem in official-4: creating/copying an invitation address could still try native-core defaults such as `smp18.whisper.li`, `smp10.whisper.li`, `smp15.whisper.li`, `smp8.whisper.li`. These hosts are not served, so Android showed a network error.
 
-## Verification
+Fix in official-5:
 
-Official release APKs must be release-signed and must not contain `debug` in the filename.
+- `Core.kt` now enforces private Whisper user servers for existing profiles at app startup.
+- `ChooseServerOperators.kt` now enforces the same servers when onboarding completes for new profiles.
+- The enforced custom servers are:
+  - SMP: `smp://0zCvaMgX0nL95J68oW7dyWrIVpMGyhbqyqbC2ekemHA=@homebudget360.tailb34dd3.ts.net:5223`
+  - XFTP: `xftp://O5SdqMMNz6c5ceFrpY5mh4kyYYuD9vUze3-uMeJ9c6o=@homebudget360.tailb34dd3.ts.net:5443`
 
-Release APK signing certificate SHA-256:
+## Verification official-5
 
-`0f933d0f0e828bc011fc468c4b9b728ec74c30be09f6bd898b619c8c10cf6ab4`
+- Gradle task: `:android:assembleRelease` → `BUILD SUCCESSFUL`.
+- Package: `chat.whisper.app`.
+- Label: `Whisper`.
+- versionCode: `360`.
+- Release signing certificate SHA-256: `0f933d0f0e828bc011fc468c4b9b728ec74c30be09f6bd898b619c8c10cf6ab4`.
+- Hotfix strings verified inside APK `classes4.dex`: `enforceWhisperPrivateServers`, `homebudget360.tailb34dd3.ts.net`.
+- No `smp*.whisper.li`, `smp*.simplex.im`, `xftp*.whisper.li`, or `xftp*.simplex.im` strings in APK dex/resources.
+- Public DNS for `homebudget360.tailb34dd3.ts.net` resolves from 1.1.1.1, 8.8.8.8, 9.9.9.9.
+- Tailscale Funnel reports TCP 5223 and 5443 enabled.
 
-GPG release signing key fingerprint:
-
-`5AED9611D6C1BDB95DFA58349BC153BAD5F1FD0E`
-
-SHA-256 for current APKs:
+## SHA256 official-5
 
 ```text
-c84702c0363ddc3aee8190ed2d13b42571f24f1b23e3c9bca83f5cbe3d70e65a  whisper-android-v6.5.6+359.4-arm64-v8a-release.apk
-baed721afd33455ef5c0e600a32182e0cd7d2770e7c923d1997788b9c89446a6  whisper-android-v6.5.6+359.4-armeabi-v7a-release.apk
+dd5f52d21d28c91f0c39368dbb814821c546bc85eb4e1fc4481cf2b9fce6bcc7  whisper-android-v6.5.6+360.5-arm64-v8a-release.apk
+8e7034e271cc280d910a3a55a8b2191f54a6ed3e23d56bfafe2fefeae1a0143c  whisper-android-v6.5.6+360.5-armeabi-v7a-release.apk
 ```
 
-Acceptance gate for the current APKs:
+## Local artifacts
 
-- `./gradlew :android:assembleRelease` with signing env → `BUILD SUCCESSFUL`.
-- Gradle release signing reads `WHISPER_*` env variables so signing passwords are not passed in process arguments.
-- Gradle task `:android:patchWhisperNativeLibs` runs before Android CMake/native packaging.
-- `aapt dump badging`:
-  - `package: name='chat.whisper.app'`
-  - `application-label:'Whisper'`
-  - native-code: `arm64-v8a` / `armeabi-v7a`
-- `apksigner verify --verbose --print-certs`:
-  - APK Signature Scheme v2: `true`
-  - signer DN: `CN=Whisper, OU=Hermes, O=Whisper, L=Rzeszow, ST=Podkarpackie, C=PL`
-- Launcher icon changed to the provided Whisper W speech-bubble artwork; packaged APK icon resources match generated 48/72/96/144/192 px density assets.
-- Whole-APK binary scan: no checked upstream/private-default relay/support strings:
-  - no `smp*.simplex.im`
-  - no `xftp*.simplex.im`
-  - no `simplexonflux.com`
-  - no `100.84.65.50`
-  - no `SimpleX Chat Relay`, `Ask SimpleX Team`, `SimpleX Status`
-  - no `SimpleX Directory`, `SimpleX network mission`, `chat@simplex.chat`
-- Whole-APK scan confirms `tailb34dd3.ts.net` / `*.tailb34dd3.ts.net` private relay domains are present in the packaged native runtime. The full public bridge/Funnel hostname is `homebudget360.tailb34dd3.ts.net`.
-- `sha256sum -c SHA256SUMS.txt` → OK for APKs, notes and public key.
-- `gpg --verify SHA256SUMS.txt.asc SHA256SUMS.txt` → valid signature.
+`/home/mike/Dokumenty/Projects/simplex-chat/dist/whisper-v6.5.6-official-5/`
 
-## Protocol vs infrastructure
+## Signing
 
-Whisper is not a new wire protocol. The protocol/client core remains a fork of the SimpleX protocol/client codebase, with AGPL source and protocol compatibility preserved.
-
-The product and infrastructure layer is Whisper:
-
-- Android package and launcher label: Whisper / `chat.whisper.app`
-- Default operator branding in the fork: Whisper
-- Support/bot profile: Asystent
-- Default relay infrastructure: Whisper SMP/XFTP relay public bridge on `homebudget360.tailb34dd3.ts.net:5223` and `homebudget360.tailb34dd3.ts.net:5443`; packaged native runtime carries equal-length `*.tailb34dd3.ts.net` relay domains until a full native rebuild can encode the full hostname everywhere.
-- Tailscale Funnel is enabled for public TCP access on `5223` and `5443`.
-- Local hairpin for this host maps `homebudget360.tailb34dd3.ts.net` to `127.0.0.1` in `/etc/hosts`, so the local bridge can create queues through the same public hostname while external clients use Funnel.
-- Public upstream relay presets are removed from the checked Android runtime/native package surface.
-
-Android native note:
-
-- The Android project consumes prebuilt `libsimplex.so` artifacts.
-- Canonical Haskell source defaults live in `src/Simplex/Chat/Operators/Presets.hs`.
-- `scripts/whisper_patch_native_libs.py` is wired into Gradle to reproducibly apply equal-length byte replacements to prebuilt native artifacts before packaging. This avoids shipping upstream default relay presets and visible upstream support strings while preserving ELF layout.
-- A full from-source Android native rebuild via upstream Nix/Hydra is a separate heavy build path.
-
-## Source and license
-
-This project is based on SimpleX Chat and is distributed under AGPL-3.0. Publish corresponding source code for every APK release.
-
-Corresponding source for the current APK release:
-
-https://github.com/Mikertk86/whisper-chat/tree/whisper-v6.5.6-official-4
-
-## Asystent contact
-
-Current Whisper/Asystent contact link uses the public Tailscale Funnel relay host `homebudget360.tailb34dd3.ts.net` and is recorded in the local Ghost runbook. The old public `smp12.simplex.im` support link is obsolete.
-
-## Notice
-
-Whisper Android is an independent build based on SimpleX Chat source code. It is not an official SimpleX Chat Ltd release.
+APK release keystore: `/home/mike/.config/whisper/release-signing.env` references local private keystore outside repo.
+GPG signing key: `/home/mike/.config/whisper/gnupg`, fingerprint `5AED9611D6C1BDB95DFA58349BC153BAD5F1FD0E`.
+Do not commit private signing material.

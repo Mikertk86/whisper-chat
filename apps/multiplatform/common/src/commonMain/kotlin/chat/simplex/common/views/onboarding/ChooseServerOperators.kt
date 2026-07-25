@@ -325,7 +325,10 @@ private fun AcceptConditionsButton(
 }
 
 private fun completeOnboarding() {
-  appPrefs.onboardingStage.set(OnboardingStage.OnboardingComplete)
+  withBGApi {
+    enforceWhisperPrivateServers(chatModel.currentUser.value ?: chatController.apiGetActiveUser(null))
+    appPrefs.onboardingStage.set(OnboardingStage.OnboardingComplete)
+  }
 }
 
 private fun enabledOperators(operators: List<ServerOperator>, selectedOperatorIds: Set<Long>): List<ServerOperator>? {
