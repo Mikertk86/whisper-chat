@@ -133,7 +133,7 @@ suspend fun initChatController(useKey: String? = null, confirmMigrations: Migrat
     val user = chatController.apiGetActiveUser(null)
     chatModel.currentUser.value = user
     enforceWhisperPrivateServers(user)
-    chatModel.conditions.value = chatController.getServerOperators(null) ?: ServerOperatorConditionsDetail.empty
+    chatModel.conditions.value = whisperPrivateConditions()
     if (appPrefs.shouldImportAppSettings.get()) {
       try {
         val appSettings = controller.apiGetAppSettings(AppSettings.current.prepareForExport())
@@ -218,35 +218,57 @@ fun chatInitControllerRemovingDatabases() {
 
 private const val WHISPER_PRIVATE_SMP_SERVER = "smp://0zCvaMgX0nL95J68oW7dyWrIVpMGyhbqyqbC2ekemHA=@homebudget360.tailb34dd3.ts.net:5223"
 private const val WHISPER_PRIVATE_XFTP_SERVER = "xftp://O5SdqMMNz6c5ceFrpY5mh4kyYYuD9vUze3-uMeJ9c6o=@homebudget360.tailb34dd3.ts.net:5443"
+private const val WHISPER_PRIVATE_DOMAIN = "homebudget360.tailb34dd3.ts.net"
+
+private fun whisperPrivateOperator() = ServerOperator(
+  operatorId = 1,
+  operatorTag = null,
+  tradeName = "Whisper Private",
+  legalName = "Whisper private relay",
+  serverDomains = listOf(WHISPER_PRIVATE_DOMAIN, "tailb34dd3.ts.net"),
+  conditionsAcceptance = ConditionsAcceptance.Accepted(null, autoAccepted = true),
+  enabled = true,
+  smpRoles = ServerRoles(storage = true, proxy = true),
+  xftpRoles = ServerRoles(storage = true, proxy = true)
+)
+
+fun whisperPrivateConditions(operator: ServerOperator = whisperPrivateOperator()) = ServerOperatorConditionsDetail(
+  serverOperators = listOf(operator),
+  currentConditions = UsageConditionsDetail(conditionsId = 0, conditionsCommit = "whisper-private", notifiedAt = null, createdAt = kotlinx.datetime.Clock.System.now()),
+  conditionsAction = UsageConditionsAction.Accepted(listOf(operator))
+)
 
 suspend fun enforceWhisperPrivateServers(user: User?) {
   if (user == null) return
   val rh: Long? = null
   try {
-    val conditions = chatController.getServerOperators(rh)
-    if (conditions != null && conditions.serverOperators.any { it.enabled || it.smpRoles.storage || it.smpRoles.proxy || it.xftpRoles.storage || it.xftpRoles.proxy }) {
-      chatController.setServerOperators(
-        rh,
-        conditions.serverOperators.map { op ->
-          op.copy(
-            enabled = false,
-            smpRoles = ServerRoles(storage = false, proxy = false),
-            xftpRoles = ServerRoles(storage = false, proxy = false)
-          )
-        }
-      )
-    }
-    chatController.setUserServers(
-      rh,
-      listOf(
-        UserOperatorServers(
-          operator = null,
-          smpServers = listOf(UserServer(remoteHostId = rh, serverId = null, server = WHISPER_PRIVATE_SMP_SERVER, preset = false, tested = true, enabled = true, deleted = false)),
-          xftpServers = listOf(UserServer(remoteHostId = rh, serverId = null, server = WHISPER_PRIVATE_XFTP_SERVER, preset = false, tested = true, enabled = true, deleted = false)),
-          chatRelays = emptyList()
-        )
+    val existing = chatController.getUserServers(rh).orEmpty()
+    val baseOp = existing.firstOrNull()?.operator ?: whisperPrivateOperator()
+    val op = baseOp.copy(
+      operatorTag = null,
+      tradeName = "Whisper Private",
+      legalName = "Whisper private relay",
+      serverDomains = listOf(WHISPER_PRIVATE_DOMAIN, "tailb34dd3.ts.net"),
+      conditionsAcceptance = ConditionsAcceptance.Accepted(null, autoAccepted = true),
+      enabled = true,
+      smpRoles = ServerRoles(storage = true, proxy = true),
+      xftpRoles = ServerRoles(storage = true, proxy = true)
+    )
+    val servers = listOf(
+      UserOperatorServers(
+        operator = op,
+        smpServers = listOf(UserServer(remoteHostId = rh, serverId = null, server = WHISPER_PRIVATE_SMP_SERVER, preset = false, tested = true, enabled = true, deleted = false)),
+        xftpServers = listOf(UserServer(remoteHostId = rh, serverId = null, server = WHISPER_PRIVATE_XFTP_SERVER, preset = false, tested = true, enabled = true, deleted = false)),
+        chatRelays = emptyList()
       )
     )
+    val validation = chatController.validateServers(rh, servers)
+    if (validation == null || validation.first.isEmpty()) {
+      chatController.setUserServers(rh, servers)
+    } else {
+      Log.e(TAG, "Whisper private server validation errors: ${validation.first}")
+    }
+    chatModel.conditions.value = whisperPrivateConditions(op)
   } catch (e: Exception) {
     Log.e(TAG, "Error enforcing Whisper private servers: " + e.stackTraceToString())
   }

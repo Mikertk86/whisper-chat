@@ -1,51 +1,36 @@
-# Whisper Android release
+# Whisper Android v6.5.6 official-6
 
-Current status: `whisper-v6.5.6-official-5` is the valid public Android hotfix release. Use official-5 instead of official-4.
+Status: current private-relay hotfix. Use official-6 instead of official-4/official-5.
 
-## Current release
+## APKs
 
-- Release tag: `whisper-v6.5.6-official-5`
-- GitHub: https://github.com/Mikertk86/whisper-chat/releases/tag/whisper-v6.5.6-official-5
-- ARM64 APK: https://github.com/Mikertk86/whisper-chat/releases/download/whisper-v6.5.6-official-5/whisper-android-v6.5.6%2B360.5-arm64-v8a-release.apk
-- ARMv7 APK: https://github.com/Mikertk86/whisper-chat/releases/download/whisper-v6.5.6-official-5/whisper-android-v6.5.6%2B360.5-armeabi-v7a-release.apk
+- ARM64: `dist/whisper-v6.5.6-official-6/whisper-android-v6.5.6+361.6-arm64-v8a-release.apk`
+- ARMv7: `dist/whisper-v6.5.6-official-6/whisper-android-v6.5.6+361.6-armeabi-v7a-release.apk`
 
-## official-5 hotfix
+## Private relay
 
-Problem in official-4: creating/copying an invitation address could still try native-core defaults such as `smp18.whisper.li`, `smp10.whisper.li`, `smp15.whisper.li`, `smp8.whisper.li`. These hosts are not served, so Android showed a network error.
+- SMP: `smp://0zCvaMgX0nL95J68oW7dyWrIVpMGyhbqyqbC2ekemHA=@homebudget360.tailb34dd3.ts.net:5223`
+- XFTP: `xftp://O5SdqMMNz6c5ceFrpY5mh4kyYYuD9vUze3-uMeJ9c6o=@homebudget360.tailb34dd3.ts.net:5443`
 
-Fix in official-5:
+## Fix vs official-5
 
-- `Core.kt` now enforces private Whisper user servers for existing profiles at app startup.
-- `ChooseServerOperators.kt` now enforces the same servers when onboarding completes for new profiles.
-- The enforced custom servers are:
-  - SMP: `smp://0zCvaMgX0nL95J68oW7dyWrIVpMGyhbqyqbC2ekemHA=@homebudget360.tailb34dd3.ts.net:5223`
-  - XFTP: `xftp://O5SdqMMNz6c5ceFrpY5mh4kyYYuD9vUze3-uMeJ9c6o=@homebudget360.tailb34dd3.ts.net:5443`
+- App startup rewrites the active user server groups to exactly one operator: `Whisper Private`.
+- Settings > Network and servers also runs the private relay enforcement before rendering.
+- The UI model conditions are overridden to one accepted private operator, not SimpleX/Flux.
 
-## Verification official-5
-
-- Gradle task: `:android:assembleRelease` → `BUILD SUCCESSFUL`.
-- Package: `chat.whisper.app`.
-- Label: `Whisper`.
-- versionCode: `360`.
-- Release signing certificate SHA-256: `0f933d0f0e828bc011fc468c4b9b728ec74c30be09f6bd898b619c8c10cf6ab4`.
-- Hotfix strings verified inside APK `classes4.dex`: `enforceWhisperPrivateServers`, `homebudget360.tailb34dd3.ts.net`.
-- No `smp*.whisper.li`, `smp*.simplex.im`, `xftp*.whisper.li`, or `xftp*.simplex.im` strings in APK dex/resources.
-- Public DNS for `homebudget360.tailb34dd3.ts.net` resolves from 1.1.1.1, 8.8.8.8, 9.9.9.9.
-- Tailscale Funnel reports TCP 5223 and 5443 enabled.
-
-## SHA256 official-5
+## SHA256
 
 ```text
-dd5f52d21d28c91f0c39368dbb814821c546bc85eb4e1fc4481cf2b9fce6bcc7  whisper-android-v6.5.6+360.5-arm64-v8a-release.apk
-8e7034e271cc280d910a3a55a8b2191f54a6ed3e23d56bfafe2fefeae1a0143c  whisper-android-v6.5.6+360.5-armeabi-v7a-release.apk
+7c9984a2ae44f62f34f93091bb5ac508fc7fd5122ea5c21270bd852cfd661a50  whisper-android-v6.5.6+361.6-arm64-v8a-release.apk
+2e00d370c843743c56a2806ee2bcfb4aa1d334c3b9e50a0de8491adc07d7e570  whisper-android-v6.5.6+361.6-armeabi-v7a-release.apk
 ```
 
-## Local artifacts
+## Verification
 
-`/home/mike/Dokumenty/Projects/simplex-chat/dist/whisper-v6.5.6-official-5/`
-
-## Signing
-
-APK release keystore: `/home/mike/.config/whisper/release-signing.env` references local private keystore outside repo.
-GPG signing key: `/home/mike/.config/whisper/gnupg`, fingerprint `5AED9611D6C1BDB95DFA58349BC153BAD5F1FD0E`.
-Do not commit private signing material.
+- Gradle: `:android:assembleRelease` BUILD SUCCESSFUL.
+- APK package: `chat.whisper.app`.
+- APK label: `Whisper`.
+- versionCode: `361`.
+- Signed with Whisper release certificate SHA-256 digest `0f933d0f0e828bc011fc468c4b9b728ec74c30be09f6bd898b619c8c10cf6ab4`.
+- APK dex contains `Whisper Private`, `enforceWhisperPrivateServers`, and `homebudget360.tailb34dd3.ts.net`.
+- No ADB device was attached for live UI verification.

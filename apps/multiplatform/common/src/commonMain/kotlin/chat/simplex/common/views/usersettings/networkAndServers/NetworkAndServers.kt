@@ -174,6 +174,7 @@ fun ModalData.NetworkAndServersView(closeNetworkAndServers: () -> Unit) {
       return@LaunchedEffect
     }
     try {
+      enforceWhisperPrivateServers(chatModel.currentUser.value ?: chatController.apiGetActiveUser(currentRemoteHost?.remoteHostId))
       val servers = getUserServers(rh = currentRemoteHost?.remoteHostId)
       if (servers != null) {
         currUserServers.value = servers
