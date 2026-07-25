@@ -7,17 +7,17 @@ Whisper is a private messenger build based on the SimpleX Chat source code, prep
 - Repo: https://github.com/Mikertk86/whisper-chat
 - Releases: https://github.com/Mikertk86/whisper-chat/releases
 - Latest: https://github.com/Mikertk86/whisper-chat/releases/latest
-- Current release: https://github.com/Mikertk86/whisper-chat/releases/tag/whisper-v6.5.6-official-3
+- Current release: https://github.com/Mikertk86/whisper-chat/releases/tag/whisper-v6.5.6-official-4
 
 ## Android package
 
 - Application ID: `chat.whisper.app`
 - App name: `Whisper`
-- Version: `6.5.6`, versionCode `358`
-- Release tag: `whisper-v6.5.6-official-3`
+- Version: `6.5.6`, versionCode `359`
+- Release tag: `whisper-v6.5.6-official-4`
 - Release artifacts:
-  - `whisper-android-v6.5.6+358.3-arm64-v8a-release.apk`
-  - `whisper-android-v6.5.6+358.3-armeabi-v7a-release.apk`
+  - `whisper-android-v6.5.6+359.4-arm64-v8a-release.apk`
+  - `whisper-android-v6.5.6+359.4-armeabi-v7a-release.apk`
 - Checksum file: `SHA256SUMS.txt`
 - Checksum signature: `SHA256SUMS.txt.asc`
 - GPG public key: `WHISPER_RELEASE_SIGNING_PUBLIC_KEY.asc`
@@ -37,13 +37,13 @@ GPG release signing key fingerprint:
 SHA-256 for current APKs:
 
 ```text
-b9c0a68d86a5c1d69e9e351fa964aff4785a092c1181ffae3fb7334c8489fc73  whisper-android-v6.5.6+358.3-arm64-v8a-release.apk
-60ff16ecaf7c677505403909031d32afb3d3dd09900fb5a05942036d6fe031fd  whisper-android-v6.5.6+358.3-armeabi-v7a-release.apk
+c84702c0363ddc3aee8190ed2d13b42571f24f1b23e3c9bca83f5cbe3d70e65a  whisper-android-v6.5.6+359.4-arm64-v8a-release.apk
+baed721afd33455ef5c0e600a32182e0cd7d2770e7c923d1997788b9c89446a6  whisper-android-v6.5.6+359.4-armeabi-v7a-release.apk
 ```
 
 Acceptance gate for the current APKs:
 
-- `./gradlew :android:assembleRelease --no-daemon` with signing env → `BUILD SUCCESSFUL`.
+- `./gradlew :android:assembleRelease` with signing env → `BUILD SUCCESSFUL`.
 - Gradle release signing reads `WHISPER_*` env variables so signing passwords are not passed in process arguments.
 - Gradle task `:android:patchWhisperNativeLibs` runs before Android CMake/native packaging.
 - `aapt dump badging`:
@@ -53,6 +53,7 @@ Acceptance gate for the current APKs:
 - `apksigner verify --verbose --print-certs`:
   - APK Signature Scheme v2: `true`
   - signer DN: `CN=Whisper, OU=Hermes, O=Whisper, L=Rzeszow, ST=Podkarpackie, C=PL`
+- Launcher icon changed to the provided Whisper W speech-bubble artwork; packaged APK icon resources match generated 48/72/96/144/192 px density assets.
 - Whole-APK binary scan: no checked upstream/private-default relay/support strings:
   - no `smp*.simplex.im`
   - no `xftp*.simplex.im`
@@ -91,7 +92,7 @@ This project is based on SimpleX Chat and is distributed under AGPL-3.0. Publish
 
 Corresponding source for the current APK release:
 
-https://github.com/Mikertk86/whisper-chat/tree/whisper-v6.5.6-official-3
+https://github.com/Mikertk86/whisper-chat/tree/whisper-v6.5.6-official-4
 
 ## Asystent contact
 
