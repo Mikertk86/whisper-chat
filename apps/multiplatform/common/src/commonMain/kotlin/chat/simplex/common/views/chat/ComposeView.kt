@@ -930,16 +930,27 @@ fun ComposeView(
     val wasForwarding = cs.forwarding
     val forwardingFromChatId = (cs.contextItem as? ComposeContextItem.ForwardingItems)?.fromChatInfo?.id
     val lastFailed = lastMessageFailedToSend
-    if (lastFailed == null) {
-      clearState(live)
-    } else {
-      composeState.value = lastFailed
+    // composeState is shared between chats, and this runs after the send API call, so the user could have switched chats
+    // or typed another message in the meantime - only the message that was sent may be cleared or restored.
+    // A live message is sent when leaving the chat, so in that case the compose state is still the sent one in another chat too.
+    val stillComposingSentMessage = composeState.value.inProgress && (chatModel.chatId.value == chat.id || cs.liveMessage != null)
+    if (stillComposingSentMessage) {
+      if (lastFailed == null) {
+        clearState(live)
+      } else {
+        composeState.value = lastFailed
+      }
     }
     val draft = chatModel.draft.value
-    if (wasForwarding && chatModel.draftChatId.value == chat.chatInfo.id && forwardingFromChatId != chat.chatInfo.id && draft != null) {
+    if (stillComposingSentMessage && wasForwarding && chatModel.draftChatId.value == chat.chatInfo.id && forwardingFromChatId != chat.chatInfo.id && draft != null) {
       composeState.value = draft
     } else {
       clearCurrentDraft()
+      // the message was not sent, so it is kept as the draft of the chat it was composed in instead of being restored into another chat
+      if (!stillComposingSentMessage && lastFailed != null && saveLastDraft) {
+        chatModel.draft.value = lastFailed
+        chatModel.draftChatId.value = chat.id
+      }
     }
     return sent
   }
@@ -1317,7 +1328,9 @@ fun ComposeView(
       deleteUnusedFiles()
     } else if (cs.inProgress) {
       clearPrevDraft(prevChatId)
-      composeState.value = cs.copy(inProgress = false, progressByTimeout = false)
+      // the message being sent must not be kept in the compose state, it is shared with the chat opened next;
+      // if it fails to send it is saved as the draft of the chat it was composed in
+      composeState.value = ComposeState(useLinkPreviews = useLinkPreviews)
     } else if (!cs.empty) {
       if (cs.preview is ComposePreview.VoicePreview && !cs.preview.finished) {
         recState.value = RecordingState.NotStarted
